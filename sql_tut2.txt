@@ -1,0 +1,103 @@
+SQL (LIKE):
+
+1. Get the names of all people whose names begin with 'B'.
+
+   select name
+   from people
+   where name LIKE 'B%'
+
+2. Get the names of people whose names don't start with A.
+
+   select name
+   from people
+   where name not LIKE 'A%'
+
+.........................................................................
+
+Aggregate functions:
+to perform some calculation on the data in a database
+
+for average:
+
+  SELECT AVG(budget)
+  FROM films;
+
+for max and min:
+
+  SELECT MAX(budget)
+  FROM films;
+
+for sum:
+
+  SELECT SUM(budget)
+  FROM films;
+
+
+..............................................................
+Arithmetics
+
+SELECT (4 * 3);    gives 12
+
+simi..
+SELECT (4 / 3);
+SELECT (4.0 / 3.0);  gives 12.0
+
+>> SQL assumes that if you divide an integer by an integer, you will get an integer back.
+.....................................................................
+
+'AS' Keyword  for (Alias):
+
+SELECT CustomerID AS ID, CustomerName AS Customer
+FROM Customers;
+
+Rule 1: Need square brackets if the alias name contains spaces:
+
+eg: 
+   SELECT CustomerName AS Customer, ContactName AS [Contact Person]
+   FROM Customers;
+	
+Rule 2: we can give a single name to many comlumns
+
+eg:
+     SELECT CustomerName, Address + ', ' + PostalCode + ' ' + City + ', ' + Country AS Address
+     FROM Customers;
+
+-OR-
+
+     SELECT CustomerName, CONCAT(Address,', ',PostalCode,', ',City,', ',Country) AS Address
+     FROM Customers;
+
+...................................................................................>>>>
+
+Q.> Get the title and net profit (the amount a film grossed, minus its budget) 
+   for all films. Alias the net profit as net_profit
+
+
+  SELECT title, gross - budget AS net_profit
+  FROM films;
+
+
+
+
+simi...
+
+Alias for Tables
+
+SELECT o.OrderID, o.OrderDate, c.CustomerName
+FROM Customers AS c, Orders AS o
+WHERE c.CustomerName="Around the Horn" AND c.CustomerID=o.CustomerID;
+
+
+
+Q.> Get the average duration in hours for all films, aliased as avg_duration_hours??
+
+    select title, AVG(duration)/60.0 as avg_duration_hours
+    from films
+
+Q.> Get the percentage of people who are no longer alive. 
+    Alias the result as percentage_dead??
+
+    select count(deathdate) * 100.0 / count(*) as percentage_dead
+    from people
+
+..............................................................................
