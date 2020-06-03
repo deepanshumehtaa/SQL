@@ -1,0 +1,27 @@
+.....................................................................
+
+id	name	   		birthdate	deathdate
+1	50 Cent	   		1975-07-06	null
+2	A. Michael Baldwin	1963-04-04	null
+3	A. Raven Cruz		null	        null
+
+.....................................................................
+
+id  title		release_year  country duration  language  gross	    budget
+1   Intolerance	        1916	      USA	123	null   	   null	    385907
+2   Over the Hill	1920	      USA	110	null	   3000000  100000
+3   The Big Parade	1925	      USA	151	null	   null	    245000
+4   Metropolis	        1927	      Germany	145	German	   26435    6000000
+
+........................................................................
+
+Q.> Get the percentage of people who are no longer alive. Alias the result as percentage_dead
+
+Ans 
+
+
+Q.> Get the number of years between the newest film and oldest film. Alias the result as difference.
+
+Ans.
+
+  

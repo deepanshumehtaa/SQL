@@ -1,0 +1,145 @@
+refrences in dbms
+central limit theorem
+
+.....................................................................
+
+id	name	   		birthdate	deathdate
+1	50 Cent	   		1975-07-06	null
+2	A. Michael Baldwin	1963-04-04	null
+3	A. Raven Cruz		null	        null
+
+.....................................................................
+
+id  title		release_year  country duration  language  gross	    budget
+1   Intolerance	        1916	      USA	123	null   	   null	    385907
+2   Over the Hill	1920	      USA	110	null	   3000000  100000
+3   The Big Parade	1925	      USA	151	null	   null	    245000
+4   Metropolis	        1927	      Germany	145	German	   26435    6000000
+
+........................................................................
+Q.> Get the percentage of people who are no longer alive. Alias the result as percentage_dead
+
+Ans 
+  select count(deathdate) * 100.0 / count(*) as percentage_dead
+  from people
+
+
+Q.> Get the number of years between the newest film and oldest film. Alias the result as difference.
+
+Ans.
+
+  select MAX(release_year) - MIN(release_year) 
+  AS diffrence
+  from films
+
+
+Q.> Get the title of films released in 2000 or 2012, in the order they were released. 
+
+   select title
+   from films
+   where release_year in (2000, 2012)
+
+
+.......................................................................
+ORDER BY
+
+ORDER BY keyword is used to sort results in ascending or descending order according to the values of one or more columns
+
+eg1:
+
+  SELECT title
+  FROM films
+  ORDER BY release_year DESC;
+
+eg2:
+
+   SELECT birthdate, name
+   FROM people
+   ORDER BY birthdate, name;
+
+
+
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Q.> Get all details for all films except those released in 2015 and order them by duration?
+
+   select title
+   from films
+   where release_year not in (2015)
+   order by duration
+
+Q.> Get the title and gross earnings for movies which begin with the letter 'M' and order the results     alphabetically.
+
+   select title, gross
+   from films
+   where title like 'M%'
+   order by title
+
+
+...............................................................................
+
+GROUP BY
+
+ For example, you might want to count the number of male and female employees in your company. Here, what you want is to group all the males together and count them, and group all the females together and count them. In SQL
+
+  SELECT sex, count(*)
+  FROM employees
+  GROUP BY sex;
+
+>>
+
+Sex	count
+female	19
+male	15
+
+
+
+Q.> Get the release year and count of films released in each year.
+
+Ans: 
+
+   SELECT release_year, count(release_year)
+   FROM films
+   GROUP BY release_year
+
+
+
+Q.> Get the release year and average duration of all films, grouped by release year.
+
+Ans:
+   SELECT release_year, AVG(duration)
+   FROM films
+   GROUP BY release_year
+
+
+Q.> Get the release year and lowest gross earnings per release year
+
+Ans:
+   SELECT release_year, MIN(gross)
+   FROM films
+   GROUP BY release_year
+
+Q.> Get the language and total gross amount films in each language made.
+
+Ans.
+   SELECT language, SUM(gross)
+   FROM films
+   GROUP BY language
+
+Q.> Get the release year, country, and highest budget spent making a film for each year, 
+    for each country. Sort your results by release year and country.
+
+Ans:
+
+
+
+
+
+...................................................................
+
+Time to practice using ORDER BY, GROUP BY and HAVING together  >>
+
+Q.> Get the release year, budget and gross earnings for each film in the films table
+
+Ans:

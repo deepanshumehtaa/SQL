@@ -1,0 +1,95 @@
+SELECT title
+FROM films
+WHERE title = 'Metropolis';
+
+
+SELECT title
+FROM films
+WHERE release_year > 2000;
+
+SELECT title, release_year
+from films
+WHERE release_year < 2000 AND language = 'Spanish'
+
+
+
+select *
+from films
+where language = 'Spanish' AND release_year >2000
+AND release_year <2010
+
+
+SELECT title
+FROM films
+WHERE (release_year = 1994 OR release_year = 1995)
+AND (certification = 'PG' OR certification = 'R');
+
+
+
+select title, release_year
+from films
+where release_year > 1989 AND release_year < 2000
+
+
+BETWEEN
+
+SELECT title
+FROM films
+WHERE release_year >= 1994
+AND release_year <= 2000;
+
+
+SELECT title
+FROM films
+WHERE release_year
+BETWEEN 1994 AND 2000;
+
+SELECT title, release_year
+FROM films
+WHERE release_year BETWEEN 1990 and 2000
+
+
+
+..............................................................
+
+SELECT title, release_year
+FROM films
+WHERE release_year BETWEEN 1990 and 2000 and budget>100000000 and title LIKE 'B%'
+
+
+
+
+*******************************************************************
+
+*WHERE IN*
+WHERE IN replaces multiple OR
+
+eg1:
+
+SELECT name
+FROM kids
+WHERE age = 2
+OR age = 4
+OR age = 6
+OR age = 8
+OR age = 10;
+
+Transform into>>>
+
+SELECT name
+FROM kids
+WHERE age IN (2, 4, 6, 8, 10);
+
+Q>.
+
+select title, release_year
+from films
+where release_year IN (1990, 2000)
+and duration > 120
+and ( language= 'English' or language= 'Spanish' or language= 'French')
+
+/* and language IN ('English', 'Spanish', 'French') */
+
+
+
+Note if you want to use OR with the AND use round brackets
