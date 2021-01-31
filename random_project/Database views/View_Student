@@ -1,0 +1,31 @@
+drop view "View_Student";
+create or replace view "View_Student" as
+select a.id as "Id" ,
+a."UserEmail" as "Email" ,
+a."UserBirthDate" as "BirthDate",
+a."UserFirstName" as "FirstName",
+a."UserMiddleName" as "MiddleName",
+a."UserLastName" as "LastName",
+a."UserGender" as "Gender",
+to_char(age(now(),a."UserBirthDate"),'YY') as "Age", 
+b."RollNo" as "RollNo",
+(select tmp."BranchName" from "UserProfile_branch" as tmp where tmp.id=b."BranchMajor_id") as "BranchMajor",	
+(select tmp."BranchName" from "UserProfile_branch" as tmp where tmp.id=b."BranchMinor") as "BranchMinor",
+(select tmp."Name" from "UserProfile_degree" as tmp where tmp.id=b."DegreePursuing_id") as "DegreePursuing",
+(select tmp."CategoryName" from "UserProfile_category" as tmp where tmp.id=b."Category_id") as "Category",	
+(select sum(cast(tmp."SecuredMarks" as double precision)*100)/sum(tmp."TotalMarks") from "UserProfile_marks" as tmp where tmp."DegreeType_id"=(select id from "UserProfile_degreetype" where "Name"='10th') and tmp."UserId_id"=a.id) as "10th_Percentage",
+(select sum(cast(tmp."SecuredMarks" as double precision)*100)/sum(tmp."TotalMarks") from "UserProfile_marks" as tmp where tmp."DegreeType_id"=(select id from "UserProfile_degreetype" where "Name"='12th') and tmp."UserId_id"=a.id) as "12th_Percentage",
+(select sum(cast(tmp."SecuredMarks" as double precision)*100)/sum(tmp."TotalMarks") from "UserProfile_marks" as tmp where tmp."DegreeType_id"=(select id from "UserProfile_degreetype" where "Name"='undergraduation') and tmp."UserId_id"=a.id) as "UG_Percentage",
+(select sum(tmp."ReappersRemaining") from "UserProfile_marks" as tmp where tmp."DegreeType_id"=(select id from "UserProfile_degreetype" where "Name"='undergraduation') and tmp."UserId_id"=a.id) as "UG_ReappersRemaining",
+b."AIEEE" as "AIEEE",
+(select tmp."MobileNo" from "UserAdress_usercontactinfo" as tmp where tmp."User_id"=a.id) as "MobileNo",
+(select tmp1."AdressNo" from "UserAdress_adress" as tmp1,"UserAdress_usercontactinfo" as tmp2 where tmp2."User_id"=a.id and tmp2."PresentAdress" =tmp1.id) as "AdressNo",
+(select tmp1."StreetAdress1" from "UserAdress_adress" as tmp1,"UserAdress_usercontactinfo" as tmp2 where tmp2."User_id"=a.id and tmp2."PresentAdress" =tmp1.id) as "PresentStreetAdressNo1",
+(select tmp1."StreetAdress2" from "UserAdress_adress" as tmp1,"UserAdress_usercontactinfo" as tmp2 where tmp2."User_id"=a.id and tmp2."PresentAdress" =tmp1.id) as "PresentStreetAdressNo2",
+(select tmp3."CityName" from "UserAdress_adress" as tmp1,"UserAdress_city" as tmp3,"UserAdress_usercontactinfo" as tmp2 where tmp2."User_id"=a.id and tmp2."PresentAdress" =tmp1.id and tmp3.id=tmp1."City_id") as "PresentCityName",
+(select tmp3."StateName" from "UserAdress_adress" as tmp1,"UserAdress_state" as tmp3,"UserAdress_usercontactinfo" as tmp2 where tmp2."User_id"=a.id and tmp2."PresentAdress" =tmp1.id and tmp3.id=tmp1."State_id") as "PresentStateName",
+(select tmp1."PinCode" from "UserAdress_adress" as tmp1,"UserAdress_usercontactinfo" as tmp2 where tmp2."User_id"=a.id and tmp2."PresentAdress" =tmp1.id) as "PinCode"
+from "Users_user" as a ,
+"UserProfile_studentdetails" as b
+where a.id=b."User_id" ;
+select * from "View_Student";

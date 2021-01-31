@@ -1,0 +1,74 @@
+CREATE OR REPLACE FUNCTION UserLogin
+(
+	emailid VARCHAR,
+	password VARCHAR,
+	login_type INTEGER,
+	ip VARCHAR,
+	time_stamp timestamp with time zone,
+	OUT userid INTEGER,
+	OUT userstate INTEGER,
+	OUT loginid INTEGER,
+	OUT groupid INTEGER,
+	OUT result INTEGER,
+	OUT username VARCHAR,
+	OUT rescode INTEGER
+) 
+RETURNS RECORD AS $$
+DECLARE
+	user__id INTEGER;
+	varrec RECORD;
+	varrec1 RECORD;
+	login_type_int INTEGER;
+	temp INTEGER;
+BEGIN 
+username := 'NULL';
+IF NOT EXISTS ( SELECT id FROM "Users_user" WHERE "UserEmail"=emailid ) THEN
+	result := -1;
+	rescode := 111;
+	groupid := -1;
+	loginid := -1;
+	userstate := -1;
+	userid := -1;
+	RETURN;
+END IF;
+
+IF NOT EXISTS ( SELECT id FROM "Users_user" WHERE "UserEmail"=emailid AND "UserPassword"=password ) THEN
+	result := -1;
+	rescode = 112;
+	groupid := -1;
+	loginid := -1;
+	userstate := -1;
+	userid := -1;
+	RETURN;
+END IF;
+
+SELECT id INTO userid FROM "Users_user" WHERE "UserEmail"=emailid;
+SELECT "Group_id" INTO groupid FROM "Users_user" WHERE id=userid;
+SELECT "State_id" INTO userstate FROM "Users_user" WHERE id=userid;
+SELECT "UserFirstName" INTO username FROM "Users_user" WHERE id=userid; 
+
+SELECT id INTO login_type_int FROM "Users_logintype" WHERE id=login_type;
+IF login_type_int IS NULL THEN 
+	rescode := 113;
+	result := -1;
+	loginid := -1;
+	RETURN;
+END IF;
+
+INSERT INTO "Users_userloginlog"(user_id,"Login_From","LoginTime","LoginIP","LogoutTime","Logout_From")
+VALUES(userid,login_type_int,time_stamp,ip,now(),login_type_int);
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode := 114;
+	result := -1;
+	loginid := -1;
+	RETURN;
+ELSE
+	rescode := 115;
+	result := 1;
+	SELECT id INTO loginid FROM "Users_userloginlog" WHERE user_id=userid AND "LoginIP"=ip AND "LoginTime"=time_stamp;
+	RETURN;
+END IF;
+RETURN;
+END;
+$$ LANGUAGE plpgsql;

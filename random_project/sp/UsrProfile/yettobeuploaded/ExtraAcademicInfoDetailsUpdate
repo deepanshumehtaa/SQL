@@ -1,0 +1,77 @@
+-- Function: extraacademicinfodetailsupdate(integer, integer, character varying, timestamp without time zone, timestamp without time zone, character varying, character varying, character varying, character varying, character varying, integer, character varying, character varying, character varying, character varying, integer, character varying)
+
+-- DROP FUNCTION extraacademicinfodetailsupdate(integer, integer, character varying, timestamp without time zone, timestamp without time zone, character varying, character varying, character varying, character varying, character varying, integer, character varying, character varying, character varying, character varying, integer, character varying);
+
+CREATE OR REPLACE FUNCTION extraacademicinfodetailsupdate(IN _id integer, IN _user_id integer, IN _title character varying, IN _start timestamp without time zone, IN _end timestamp without time zone, IN _organisation character varying, IN _designation character varying, IN _details character varying, IN _placeofwork character varying, IN _functionalarea character varying, IN _extraacadmicinfotype_id integer, IN _references character varying, IN _summary character varying, IN prev character varying, IN requestedoperation character varying, IN by_user integer, IN ip character varying, OUT result integer, OUT rescode integer)
+  RETURNS record AS
+$BODY$
+DECLARE 
+    temp INTEGER;
+    varrec RECORD;
+BEGIN 
+temp := 0;
+
+IF NOT EXISTS ( SELECT id FROM "UserProfile_extraacademicinfodetails" WHERE id=_Id) THEN
+	result := -4;
+  	rescode := 161;
+	RETURN;
+END IF;
+
+
+IF EXISTS ( SELECT id FROM "UserProfile_extraacademicinfodetails" WHERE "User_id"=_User_id and "Start"=_Start and "Organisation"=_Organisation and id<>_Id and "Title" =_Title) THEN
+	result := -3;
+  	rescode := 200;
+	RETURN;
+END IF;
+
+SELECT * INTO varrec FROM CheckUserForPermission(by_user,RequestedOperation,'extraacademicinfodetails','UserProfile');
+IF varrec.result <> 1 THEN
+	rescode :=  varrec.rescode;
+	result := -2;
+	RETURN;
+END IF;
+
+Update "UserProfile_extraacademicinfodetails"
+set
+"User_id"=_User_id,
+"Title"=_Title,
+"Start"=_Start, 
+"End"=_End, 
+"Organisation"=_Organisation,
+"Designation"=_Designation,
+"Details"=_Details, 
+"PlaceOfWork"=_PlaceOfWork, 
+"FunctionalArea"=_FunctionalArea, 
+"ExtraAcadmicInfoType_id"=_ExtraAcadmicInfoType_id,
+"State_id"=varrec.varsci, 
+"References"=_References, 
+"Summary"=_Summary
+WHERE Id=_Id;
+
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode := 162;
+	result := -1;
+        RETURN;
+END IF;
+
+SELECT id INTO rescode FROM "UserProfile_extraacademicinfodetails" WHERE "User_id"=_User_id and "Start"=_Start and "Organisation"=_Organisation;
+
+
+INSERT INTO "UserProfile_userprofilelogs"("LogsUser_id", "ContentType_id", "LogsObject", "LogsPermission_id", "LogsIP", "LogsTimeStamp", "LogsDescription","LogsPreviousState")
+VALUES (by_user,varrec.var_ctid,rescode,varrec.varpci,ip,now(),'UPDATE',prev);
+GET DIAGNOSTICS temp := ROW_COUNT;
+IF temp <> 1 THEN 
+	rescode := 999;
+	result := -1;
+        RETURN;
+ELSE
+	result := 1;
+RETURN;
+END IF;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION extraacademicinfodetailsupdate(integer, integer, character varying, timestamp without time zone, timestamp without time zone, character varying, character varying, character varying, character varying, character varying, integer, character varying, character varying, character varying, character varying, integer, character varying)
+  OWNER TO "ThoughtXplore";
