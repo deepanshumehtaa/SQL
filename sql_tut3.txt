@@ -1,12 +1,28 @@
+HAVING: give us power to use aggregate function in query as we can't use that in WHERE clause.
+
+SELECT release_year, SUM(duration) AS sum_dur
+FROM films
+GROUP BY release_year
+HAVING COUNT(title) > 10;
+
+>>
+release_year	      sum_dur
+1988	              3317
+null	              3175
+2008	              23711
+
+The default coln produce by sum() is "sum"
+................................................................................................
+
 refrences in dbms
 central limit theorem
 
 .....................................................................
 
-id	name	   		birthdate	deathdate
-1	50 Cent	   		1975-07-06	null
-2	A. Michael Baldwin	1963-04-04	null
-3	A. Raven Cruz		null	        null
+id	    name	   		    birthdate	    deathdate
+1	      Cent	   		    1975-07-06	  null
+2	      Michael Baldwin	1963-04-04	  null
+3	      Raven Cruz		  null	        null
 
 .....................................................................
 
