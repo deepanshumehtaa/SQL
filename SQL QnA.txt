@@ -1,0 +1,30 @@
+Q. What is a SQL join and why do we need it?
+A. Joins are used to combine records from two or more than two tables in a database system. 
+   A join refers to combining the fields from two or more than two tables by using a value that is common to each of the tables which helps 
+   in reducing the repeated columns and data stored in columns of the same table. 
+   
+   We need joins to get details about the referenced data and It creates a logical bonding between two or more tables. 
+   It is necessary to get data efficiently from multiple tables, that’s why we need SQL joins.
+   
+Q. What are the different types of SQL joins? Explain Each?
+A. 5 joins in SQL:
+1. Inner Join OR Join:
+    get all the records that match the condition in--> two or more than two tables and but not those 
+    that didn’t match are not displayed. It displays only the matching entries of two or more tables.
+
+2. Outer Join:
+    1. LEFT Join or LEFT Outer Join
+This kind of join will return all the rows from the left table in combination with the matching records or rows from the right table.
+If there are no matching columns then it will return NULL values.
+
+2. RIGHT Join or RIGHT Outer Join
+This kind of join will return all the rows from the right table in combination with the matching records or rows from the left table.
+If there are no matching columns then it will return NULL values.
+
+3. Full Join or Full Outer Join
+This kind of JOIN combines Right Outer Join in addition to Left Outer Join. 
+It displays records from the tables when the conditions are met and displays the NULL value when there is no match.
+
+4. 
+
+Q3:
