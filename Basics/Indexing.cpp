@@ -16,7 +16,7 @@ USE INDEX hint –  shows you how to use the USE INDEX hint to instruct the quer
 FORCE INDEX hint – shows you how to use the FORCE INDEX hint to force the query optimizer to use specified indexes to select data from a table.
 
   
-1. CREATING INDEX:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+1. CREATING INDEX:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 >>
 By Default, MySql creates a BTree index
 other indexes are:
@@ -54,7 +54,7 @@ SHOW INDEXES FROM employees;
 Ref:  https://medium.com/@mena.meseha/what-is-the-difference-between-mysql-innodb-b-tree-index-and-hash-index-ed8f2ce66d69
       https://www.mysqltutorial.org/mysql-index/mysql-drop-index/
 
-2. Invisible INDEX:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+2. Invisible INDEX:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 See the Hidden Indexes on Tables::
 
@@ -107,7 +107,7 @@ WHERE visible = 'NO';
 
 
 
-3. Unique indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+3. Unique indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 CREATE UNIQUE INDEX <index_name>
 ON table_name(index_column_1,index_column_2,...);
@@ -116,7 +116,7 @@ But SQL creates the Uniue index for Unique Constarint so, no need of Run above  
 
 
 
-4. Descending indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+4. Descending indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 By default the
 
 # Eg 1
@@ -143,12 +143,78 @@ CREATE TABLE class_table(
    INDEX new_idx(roll_no ASC, class DESC) 
 );
 
-5. Composite indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+5. Composite indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 A composite index -OR- Multiple-Column Index is an index on multiple columns (up to 16 columns).
 
+# Eg 1..........................
+CREATE INDEX index_name 
+  ON table_name(c2,c3,c4);
 
+
+# Eg 2..........................
+CREATE TABLE class_table(
+   # Feilds
+   stud_id  INT AUTO_INCREMENT,
+   roll_no  INT NOT NULL,
+   class    INT NOT NULL,
+   name     VARCHAR(10),
+   
+   # Constraints
+   PRIMARY KEY(stud_id),
+   UNIQUE KEY unique_roll_no(roll_no),                  # unique_roll_no is the name of Uniuque Constraint
+   CONSTRAINT UC_roll_no_class UNIQUE (Class, roll_no),
+   
+   # Creating Indexing
+   INDEX new_idx(roll_no ASC, class DESC, stud_id) 
+);
+
+====> If you specify the columns in the right order in the index definition, a single composite index can speed up these kinds of queries on the same table.
   
-+++ If you specify the columns in the right order in the index definition, a single composite index can speed up these kinds of queries on the same table.
+Notice that if you have a composite index on (c1,c2,c3), you will have indexed search capabilities on one the following column combinations:
+
+(c1)
+(c1,c2)
+(c1,c2,c3)
+
+ie.
+  
+CREATE INDEX idx_fname 
+ON employees(lastName, firstName);
+
+>> idx_fname index can be used for lookups in the queries that specify a lastName value 
+because the lastName column is the leftmost prefix of the index.
+>> Also, idx_fname index can be used for queries that specify values 
+for the combination of the lastName and firstName values.
+  
+Eg:
+
+SELECT * FROM employees
+WHERE lastName = 'Patterson';
+
+SELECT * FROM employees
+
+WHERE lastName = 'Patterson' AND firstName = 'Steve';
+--OR--
+WHERE lastName = 'Patterson' AND
+(firstName = 'Steve' OR firstName = 'Mary');
+
+-- The above queries are using Index
+  
+you can check the detail of the query by adding EXPLAIN in front of the query
+
+EXPLAIN SELECT * FROM employees
+WHERE lastName = 'Patterson';
+  
+
+BUT The Query Below is not using INDEXING
+
+SELECT * FROM employees
+WHERE firstName = 'Patterson';
+  
+WHY??  firstName column which is not the leftmost prefix of the index is used:
+  
+  
+  
   
   
   
