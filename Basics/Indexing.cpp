@@ -25,12 +25,20 @@ Hash Indexes
 
 # 1
 CREATE TABLE class_table(
-   id       INT PRIMARY KEY,
+   # Feilds
+   id       INT NOT NULL PRIMARY KEY,
    roll_no  INT NOT NULL,
    class    INT NOT NULL,
    name     VARCHAR(10),
+   
+   # Unique Constraints
+   UNIQUE (roll_no),
+   CONSTRAINT UC_roll_no_class UNIQUE (Class, roll_no)
+   
+   # Creating Indexing
    INDEX (roll_no, class) 
 );
+
 
 # 2
 CREATE INDEX <index_name> ON <table_name> (column_list)
@@ -45,13 +53,22 @@ SHOW INDEXES FROM employees;
 Ref:  https://medium.com/@mena.meseha/what-is-the-difference-between-mysql-innodb-b-tree-index-and-hash-index-ed8f2ce66d69
       https://www.mysqltutorial.org/mysql-index/mysql-drop-index/
 
-2. Dropping INDEX:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+2. Invisible INDEX:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-DROP INDEX index_name ON table_name
-[algorithm_option | lock_option];
+See the Hidden Indexes on Tables::
 
+SHOW INDEXES FROM <table_name> 
+IN <db_name>;
 
+--OR--
+  
+SHOW INDEXES FROM <db_name>.<table_name>;
 
++++point synonyms
+
+INDEX <---> KEYS
+
+FROM <---> IN
 
 
 
