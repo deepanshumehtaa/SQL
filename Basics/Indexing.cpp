@@ -26,12 +26,13 @@ Hash Indexes
 # 1
 CREATE TABLE class_table(
    # Feilds
-   id       INT NOT NULL PRIMARY KEY,
+   stud_id  INT NOT NULL AUTO_INCREMENT,
    roll_no  INT NOT NULL,
    class    INT NOT NULL,
    name     VARCHAR(10),
    
    # Unique Constraints
+   PRIMARY KEY(stud_id),
    UNIQUE (roll_no),
    CONSTRAINT UC_roll_no_class UNIQUE (Class, roll_no)
    
@@ -66,9 +67,36 @@ SHOW INDEXES FROM <db_name>.<table_name>;
 
 +++point synonyms
 
+=>
 INDEX <---> KEYS
-
 FROM <---> IN
 
+Eg:
 
+SHOW INDEX IN table_name 
+FROM database_name;
 
+===
+  
+SHOW KEYS FROM tablename
+IN databasename;
+
+=>
+The primary key index always has the name of "PRIMARY"  
+
+SHOW INDEX GIVES THE INFO like:
+
+1. collation :: tells how the index is stored
+      A --> Ascending order
+      B --> Descending order
+      NULL  Not Sorted
+
+2. null
+      return YES if NULL or Blank values are there 
+
+3. index_type:
+      index method used such as:: BTREE, HASH, RTREE, or FULLTEXT.
+
+4. cardinality ::
+      Unique Values in the Index
+      
