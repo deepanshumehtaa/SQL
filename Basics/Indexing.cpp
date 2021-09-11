@@ -26,7 +26,7 @@ Hash Indexes
 # 1
 CREATE TABLE class_table(
    # Feilds
-   stud_id  INT NOT NULL AUTO_INCREMENT,
+   stud_id  INT AUTO_INCREMENT,
    roll_no  INT NOT NULL,
    class    INT NOT NULL,
    name     VARCHAR(10),
@@ -117,8 +117,38 @@ But SQL creates the Uniue index for Unique Constarint so, no need of Run above  
 
 
 4. Descending indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+By default the
 
+# Eg 1
+CREATE TABLE t(
+    a INT NOT NULL,
+    b INT NOT NULL,
+    INDEX a_asc_b_desc(a ASC, b DESC)
+);
+
+# Eg 2
+CREATE TABLE class_table(
+   # Feilds
+   stud_id  INT AUTO_INCREMENT,
+   roll_no  INT NOT NULL,
+   class    INT NOT NULL,
+   name     VARCHAR(10),
+   
+   # Constraints
+   PRIMARY KEY(stud_id),
+   UNIQUE KEY unique_roll_no(roll_no),                  # unique_roll_no is the name of Uniuque Constraint
+   CONSTRAINT UC_roll_no_class UNIQUE (Class, roll_no),
+   
+   # Creating Indexing
+   INDEX new_idx(roll_no ASC, class DESC) 
+);
 
 5. Composite indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+A composite index -OR- Multiple-Column Index is an index on multiple columns (up to 16 columns).
 
 
+  
++++ If you specify the columns in the right order in the index definition, a single composite index can speed up these kinds of queries on the same table.
+  
+  
+  
