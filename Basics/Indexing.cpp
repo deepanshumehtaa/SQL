@@ -31,9 +31,9 @@ CREATE TABLE class_table(
    class    INT NOT NULL,
    name     VARCHAR(10),
    
-   # Unique Constraints
+   # Constraints
    PRIMARY KEY(stud_id),
-   UNIQUE (roll_no),
+   UNIQUE KEY unique_roll_no(roll_no),                  # unique_roll_no is the name of Uniuque Constraint
    CONSTRAINT UC_roll_no_class UNIQUE (Class, roll_no)
    
    # Creating Indexing
@@ -100,3 +100,25 @@ SHOW INDEX GIVES THE INFO like:
 4. cardinality ::
       Unique Values in the Index
       
+
+# SHOW THE INVISIBLE INDEX
+SHOW INDEXES FROM contacts
+WHERE visible = 'NO';
+
+
+
+3. Unique indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+CREATE UNIQUE INDEX <index_name>
+ON table_name(index_column_1,index_column_2,...);
+
+But SQL creates the Uniue index for Unique Constarint so, no need of Run above  query
+
+
+
+4. Descending indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+5. Composite indexes:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
