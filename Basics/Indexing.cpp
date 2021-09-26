@@ -112,7 +112,7 @@ WHERE visible = 'NO';
 CREATE UNIQUE INDEX <index_name>
 ON table_name(index_column_1,index_column_2,...);
 
-But SQL creates the Uniue index for Unique Constarint so, no need of Run above  query
+But SQL creates the Uniue index for Unique Constarint.
 
 
 

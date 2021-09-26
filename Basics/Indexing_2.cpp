@@ -48,7 +48,31 @@ This is Reallyt Expensive and Complex better to avoid
   
 MySQL Prefix Index::>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
   When you create a secondary index for a column, MySQL stores the values of the columns in a separate data structure e.g., B-Tree and Hash.
-  and this take large storage and makes the INSERT slow
+  and this take large storage and makes the INSERT slow so, MySQL allows u to create an index for the leading part of the column values of the string columns using the following syntax:
   
+  ==> column_name(length) : gives u the power to change the length of the index key
+  Eg:
+  
+  CREATE TABLE table_name(
+    column_list,
+    INDEX(column_name(length))
+  );
+
+  
+  and on existing table
+  
+  CREATE INDEX index_name
+  ON table_name(column_name(length)); 
+
+
+
+
+
+
+
+
+
+
+
 
 
