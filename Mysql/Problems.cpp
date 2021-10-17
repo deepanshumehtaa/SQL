@@ -1,10 +1,12 @@
 Amazon::
 
 Q.
-Given a shoping data, find the % spend of each customer rounded to each nearest whole num.
+Given a shoping data, find the % spend of each order of customer
+(ie. if he has 3 orders, then their %s are like 55, 33, 11 sum to 100), 
+rounded the each percentage to nearest whole num.
 Show it like: name, detail and percentage
 we have two tables
-1. Orders
+1. orders
 	id
 	cust_id
 	cost
@@ -25,7 +27,24 @@ Ans:
 	3. then finc the percentage
 	4. apply round() on percentage value
 	
+	Query:
+	
+	Step 1,2:
 
+	SELECT name, detail, SUM(quantity) OVER (PARTITION BY name)
+	FROM orders
+	INNER JOIN customers;
+	# the partion by name is ~equilent~ to GROUP BY name
+	
+	Step 3:
+	SELECT name, detail, cost/SUM(quantity) OVER (PARTITION BY name)::FLOAT *100
+	FROM orders
+	INNER JOIN customers;
+
+	Step 4:
+	SELECT name, detail, round( cost / SUM(quantity) OVER (PARTITION BY name)::FLOAT *100, 0) as percentage_cost
+	FROM orders o
+	INNER JOIN customers c;
 // Learning::
 1. 	when we are using GROUP BY, the windows agrregate function behave like Grouping Function
 	like AVG, COUNT, SUM, COUNT, etc.
@@ -81,12 +100,14 @@ FROM ......
 
 Remember DISTINCT works on entire row ie.
 
-stud_name 	from 	class
+stud_name 	from	class
 Deepu		FGC		10
 Deepu		FGC		11
 
 + they are DISTINCT
 
+5. round() in SQL works similar to the python
+	just give round(value, digits after decimal)
 
 
 
